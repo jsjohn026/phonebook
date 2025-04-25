@@ -26,4 +26,4 @@ personSchema.set('toJSON', {
   }
 })
 
-module.export = mongoose.model('Person', personSchema)
+module.exports = mongoose.model('Person', personSche
