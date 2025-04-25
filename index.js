@@ -1,9 +1,10 @@
+require('dotenv').config()
 const express = require('express')
-const app = express()
 const morgan = require('morgan')
+const Person = require('./models/person')
 
-app.use(express.json())
-app.use(express.static('dist'))
+const app = express()
+
 
 let persons = [
   { 
@@ -38,6 +39,11 @@ let persons = [
   }
 ]
 
+const password = process.argv[2]
+
+app.use(express.static('dist'))
+app.use(express.json())
+
 let info = `
   <p>Phonebook has info for ${persons.length} people</p>
   <p>${new Date()}</p>
@@ -52,7 +58,9 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+  Person.find({}).then(persons => {
+    response.json(persons)
+  })
 })
 
 app.get('/info', (request, response) => {
@@ -61,11 +69,11 @@ app.get('/info', (request, response) => {
 
 app.get('/api/persons/:id', (request, response) => {
   const id = request.params.id
-  const person = persons.find(person => person.id === id)
-
-  person 
-    ? response.json(person) 
-    : response.status(404).end()
+  Person.findById(id).then(person => {
+    person 
+      ? response.json(person) 
+      : response.status(404).end()
+  })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -99,16 +107,17 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
-  const person = {
+  const person = new Person({
     name: body.name,
     number: body.number,
-    id: generateId()
-  }
+  })
 
-  persons = persons.concat(person)
-  response.json(person)
+  person.save().then(savedPerson => {
+    response.json(person)
+  })
 })
 
-const PORT = process.env.PORT || 3001
-app.listen(PORT)
-console.log(`Server running on port ${PORT}`)
+const PORT = process.env.PORT
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
