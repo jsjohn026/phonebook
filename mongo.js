@@ -2,8 +2,6 @@ const mongoose = require('mongoose')
 
 const password = process.argv[2]
 
-const url = `mongodb+srv://fullstack:${password}@cluster1.wpmkntq.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=Cluster1`
-
 mongoose.set('strictQuery', false)
 
 mongoose.connect(url)

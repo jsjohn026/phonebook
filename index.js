@@ -5,7 +5,6 @@ const Person = require('./models/person')
 
 const app = express()
 
-
 let persons = [
   { 
     "id": "1",
