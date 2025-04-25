@@ -98,13 +98,13 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
-  const submittedName = body.name
-  const currentNames = [...persons.filter(person => person.name === submittedName)]
-  if (currentNames.length > 0 && submittedName === currentNames[0].name) {
-    return response.status(409).json({
-      error: 'name must be unique'
-    })
-  }
+  // const submittedName = body.name
+  // const currentNames = [...persons.filter(person => person.name === submittedName)]
+  // if (currentNames.length > 0 && submittedName === currentNames[0].name) {
+  //   return response.status(409).json({
+  //     error: 'name must be unique'
+  //   })
+  // }
 
   const person = new Person({
     name: body.name,
