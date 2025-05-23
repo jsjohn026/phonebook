@@ -2,12 +2,13 @@ const mongoose = require('mongoose')
 
 const password = process.argv[2]
 
-mongoose.set('strictQuery', false)
+const url = `mongodb+srv://fullstack:${password}@cluster1.wpmkntq.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=phonebookApp`
 
+mongoose.set('strictQuery', false)
 mongoose.connect(url)
 
 const personSchema = new mongoose.Schema({
-  name: String, 
+  name: String,
   number: String
 })
 
@@ -29,8 +30,8 @@ if (process.argv.length < 3) {
     name: process.argv[3],
     number: process.argv[4]
   })
-  
-  person.save().then(result => {
+
+  person.save().then(() => {
     console.log(`added ${person.name} number ${person.number} to phonebook`)
     mongoose.connection.close()
   })

@@ -5,8 +5,6 @@ const Person = require('./models/person')
 
 const app = express()
 
-const password = process.argv[2]
-
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
   console.log('Path:  ', request.path)
@@ -38,7 +36,7 @@ app.get('/info', (request, response) => {
       <p>Phonebook has info for ${persons.length} people</p>
       <p>${new Date()}</p>
     `
-    
+
     response.send(info)
   })
 })
@@ -47,8 +45,8 @@ app.get('/api/persons/:id', (request, response, next) => {
   const id = request.params.id
   Person.findById(id)
     .then(person => {
-      person 
-        ? response.json(person) 
+      person
+        ? response.json(person)
         : response.status(404).end()
     })
     .catch(error => next(error))
@@ -57,13 +55,13 @@ app.get('/api/persons/:id', (request, response, next) => {
 app.delete('/api/persons/:id', (request, response, next) => {
   const id = request.params.id
   Person.findByIdAndDelete(id)
-    .then(result => {response.status(204).end()})
+    .then(() => {response.status(204).end()})
     .catch(error => next(error))
 })
 
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
-  
+
   if (!body.name || !body.number) {
     return response.status(400).json({
       error: 'content missing'
@@ -78,7 +76,7 @@ app.post('/api/persons', (request, response, next) => {
   person.save().then(savedPerson => {
     response.json(savedPerson)
   })
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
