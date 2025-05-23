@@ -28,9 +28,7 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-  Person.find({}).then(persons => {
-    response.json(persons)
-  })
+  Person.find({}).then(persons => {response.json(persons)})
 })
 
 app.get('/info', (request, response) => {
@@ -59,9 +57,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 app.delete('/api/persons/:id', (request, response, next) => {
   const id = request.params.id
   Person.findByIdAndDelete(id)
-    .then(result => {
-      response.status(204).end()
-    })
+    .then(result => {response.status(204).end()})
     .catch(error => next(error))
 })
 
